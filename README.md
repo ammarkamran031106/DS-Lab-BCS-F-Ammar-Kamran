@@ -1,2 +1,3 @@
 # DS-Lab-BCS-F-Ammar-Kamran
-This repo will contain my work for DS lab @ Fast karachi
+HEYOOO!!
+This Repositiory Will Contain My DS-Lab Material Having My Lab Tasks and Project on my DS-Course.
