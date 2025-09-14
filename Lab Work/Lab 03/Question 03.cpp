@@ -3,80 +3,88 @@ using namespace std;
 class Node{
 	public:
 		int data;
-		Node* next;
-		Node *prev;
+		Node *next;
 		Node(){
 			data=0;
 			next=NULL;
-			prev=NULL;
 		}
-		Node(int val,Node *n,Node *p){
+		Node(int val,Node *n){
 			data=val;
 			next=n;
-			prev=p;
 		}
 };
-class LL{			//Singly To Circular
+class LinkedList{
 	public:
-	Node *head;
-	Node *tail;
-		LL(){
+		Node *head;
+		Node *tail;
+		LinkedList(){
 			head=NULL;
 			tail=NULL;
 		}
-		void Insert_Node(int val,Node *n,Node *p){
-			
+		void InsertNode(int val,Node *n){
 			if(head==NULL){
-				head=new Node(val,n,p);
+				head=new Node(val,n);
 				tail=head;
 			}
-			else {
-            tail->next = new Node(val,n,p);
-            tail =tail->next;
-        	}
-    	}
-    	void LL_TO_CL(Node *head,Node *tail){
-    		tail->next=head;
-    		cout<<"Singly Linked List CONVERTED To Circular Linked List"<<endl;
-    		Node* temp=head;
-    		if(head==NULL){
-    			return;
+			else{
+				tail->next=new Node(val,n);
+				tail=tail->next;
 			}
-    		do{
-    			cout<<temp->data<<"      ";
-    			temp=temp->next;
-			}while(temp !=head);
-			cout<<endl;
 		}
-		void LL_TO_DL(Node *head,Node *tail){
+		Node* ReverseNodeGroup(Node *n,int k){
 			if(head==NULL){
-				return;
+				return 0;
 			}
-			Node *curr=head;
-			Node *prev=NULL;
-			while(curr != NULL){
-			curr->prev=prev;
-			prev=curr;
-			curr=curr->next;
+			else{
+    			Node* prev = nullptr;
+    			Node* curr = n;
+    			Node* next = nullptr;
+    			int counter=0;
+    				while(curr !=NULL && counter < k){
+        					next = curr->next;   // save next
+        					curr->next = prev;   // reverse link
+        					prev = curr;         // move prev forward
+        					curr = next;         // move curr forward
+    						counter++;}
+    				if(next !=NULL){
+    					n->next=ReverseNodeGroup(next,k);
+					}
+    			return prev;
 			}
-		cout<<"Singly Linked List CONVERTED To Doubly Linked List"<<endl;
-		Node* temp=tail;
-		while(temp!=NULL){
-			cout<<temp->data<<"      ";
-			temp=temp->prev;
-		}	
-		}
+	}
+		
 };
 int main() {
-    LL list1;
-    list1.Insert_Node(1, NULL,NULL);
-    list1.Insert_Node(2, NULL,NULL);
-    list1.Insert_Node(3, NULL,NULL);
-    list1.LL_TO_CL(list1.head,list1.tail);
-    LL list2;
-    list2.Insert_Node(1,NULL,NULL);
-    list2.Insert_Node(2,NULL,NULL);
-    list2.Insert_Node(3,NULL,NULL);
-    list2.LL_TO_DL(list2.head, list2.tail);
-}
+    LinkedList list;
 
+    // Insert nodes into the list
+    list.InsertNode(1, NULL);
+    list.InsertNode(2, NULL);
+    list.InsertNode(3, NULL);
+    list.InsertNode(7, NULL);
+    list.InsertNode(6, NULL);
+    list.InsertNode(4, NULL);
+    list.InsertNode(2,NULL);
+    list.InsertNode(1,NULL);
+    list.InsertNode(9,NULL);
+    list.InsertNode(8,NULL);
+    cout<<"The Orignal Linked List"<<endl;
+    Node *temp1=list.head;
+    while(temp1 != NULL){
+    	cout<<temp1->data<<"     ";
+    	temp1=temp1->next;
+	}
+	cout<<endl;
+    int k = 4; // group size for reversal
+
+    Node* newHead = list.ReverseNodeGroup(list.head, k);
+    cout<<"The Reversed Group Linked List"<<endl;
+    Node* temp = newHead;
+    while (temp != NULL) {
+        cout << temp->data << "     ";
+        temp = temp->next;
+    }
+    cout << endl;
+
+    return 0;
+}
